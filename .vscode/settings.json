@@ -1,0 +1,17 @@
+{
+  "terminal.integrated.env.osx": {
+    "PYTHONPATH": "${workspaceFolder}/"
+  },
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}/"
+  },
+  "terminal.integrated.env.windows": {
+    "PYTHONPATH": "${workspaceFolder}/"
+  },
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**pytest_cache": true,
+    "env": true,
+
+  }
+}
