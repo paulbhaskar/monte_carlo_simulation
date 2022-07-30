@@ -41,4 +41,4 @@ for trial in range(trials):
                 print('best five cards', best_two_hold_card_combination,
                       TexasHoldem.determine_hand(best_two_hold_card_combination)[1])
 
-print(decimal.Decimal(count/trials) * 100)
+print(f"count: {count} trials: {trials} percentage: {decimal.Decimal(count/trials) * 100}%")
