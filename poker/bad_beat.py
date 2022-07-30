@@ -2,9 +2,9 @@ import decimal
 
 from poker.texas_holdem import *
 
+count = 0
 trials = 1000000
 for trial in range(trials):
-    count = 0
     game = TexasHoldem()
     community_cards = game.community_cards
     player_cards = []
