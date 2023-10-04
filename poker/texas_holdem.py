@@ -138,65 +138,41 @@ class TexasHoldem():
         return ranks
 
     def check_if_both_hole_cards_used(community_cards, hole_cards):
-        #max_score_one_hold_card_index = False
-        #max_score_two_hold_card_index = False
         player_cards = TexasHoldem.player_cards(community_cards, hole_cards)
         best_hand = TexasHoldem.determine_hand(player_cards)[1]
-        community_card_combinations = itertools.combinations(
-            community_cards, 3)
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            best_hand, community_cards, hole_cards, 3, scores={})[0]
 
-        counter = []
-        for combination in community_card_combinations:
-            player_cards = TexasHoldem.player_cards(combination, hole_cards)
-            player_hand = TexasHoldem.determine_hand(player_cards)
-            counter.append(player_hand[1] == best_hand)
+        count = 0
+        for card in best_five_cards:
+            if card in hole_cards:
+                count += 1
+            if count == 2:
+                return True
+        return False
 
-        if all(element is False for element in counter):
-            return False
-
-        counter = []
-        community_card_combinations = itertools.combinations(
-            community_cards, 4)
-        for combination in community_card_combinations:
-            player_cards = TexasHoldem.player_cards(combination, hole_cards[0])
-            player_hand = TexasHoldem.determine_hand(player_cards)
-            counter.append(player_hand[1] == best_hand)
-
-        if all(element is False for element in counter):
-            used_hole_card = hole_cards[1]
-        else:
-            used_hole_card = hole_cards[0]
-
+    def calculate_five_cards_used(best_hand, community_cards, hole_cards, n, scores={}):
         hash_map = {'jack': 11, 'queen': 12, 'king': 13, 'ace': 14}
 
-        best_one_hole_card_combination, max_score_one_hold_card = TexasHoldem.calculate_five_cards_used(
-            best_hand, community_cards, used_hole_card, 4)
-        best_two_hold_card_combination, max_score_two_hold_card = TexasHoldem.calculate_five_cards_used(
-            best_hand, community_cards, hole_cards, 3)
-
-        if max_score_one_hold_card >= max_score_two_hold_card:
-            return False
-        return True
-
-    def calculate_five_cards_used(best_hand, community_cards, hole_cards, n):
-        hash_map = {'jack': 11, 'queen': 12, 'king': 13, 'ace': 14}
         community_card_combinations = list(
             itertools.combinations(community_cards, n))
-        scores = {}
-        player_cards = []
-        combination_plus_hole_cards = []
-        for index, combination in enumerate(community_card_combinations):
-            combination_plus_hole_cards = TexasHoldem.player_cards(
-                combination, hole_cards)
-            player_hand = TexasHoldem.determine_hand(
-                combination_plus_hole_cards)
-            player_cards.append(combination_plus_hole_cards)
-            if player_hand[1] == best_hand:
-                ranks = get_ranks(player_hand[0])
-                card_ranks = [int(rank) if rank.isnumeric()
-                              else hash_map[rank] for rank in ranks]
-                scores[index] = sum(card_ranks)
-        if scores:
-            max_score_one_hold_card_index = max(scores, key=scores.get)
-            return player_cards[max_score_one_hold_card_index], scores[max_score_one_hold_card_index]
-        return player_cards, 0
+        hole_card_combinations = list(
+            itertools.combinations(hole_cards, 5-n))
+        for index, hole_cards in enumerate(hole_card_combinations):
+            for index, combination in enumerate(community_card_combinations):
+                combination_plus_hole_cards = TexasHoldem.player_cards(
+                    combination, hole_cards)
+                player_hand = TexasHoldem.determine_hand(
+                    combination_plus_hole_cards)
+                if player_hand[1] == best_hand:
+                    ranks = get_ranks(player_hand[0])
+                    card_ranks = [int(rank) if rank.isnumeric()
+                                  else hash_map[rank] for rank in ranks]
+                    scores[sum(card_ranks)] = combination_plus_hole_cards
+
+        if n == 5:
+            best_five_card_hand = scores[max(scores)]
+            return best_five_card_hand, max(scores)
+        n = n + 1
+        return TexasHoldem.calculate_five_cards_used(
+            best_hand, community_cards, hole_cards, n, scores)
