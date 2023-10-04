@@ -326,9 +326,124 @@ class TestCheckIfBothHoleCardsUsed:
         assert TexasHoldem.check_if_both_hole_cards_used(
             cards34, hole_cards) is True
 
-    def test_check(self, cards33):
-        card = Card('spades', 'jack')
-        card2 = Card('spades', 'queen')
-        hole_cards = [card, card2]
-        print(TexasHoldem.calculate_five_cards_used(
-            'straight flush', cards33, hole_cards, 3))
+
+class TestCalculateFiveCardsUsed:
+    def test_calculate_five_cards_used_1(self, cards35):
+        community_cards = cards35[:5]
+        hole_cards = cards35[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'straight', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('spades', 'ace')
+        assert best_five_cards[0][1] == Card('spades', 'queen')
+        assert best_five_cards[0][2] == Card('spades', 'jack')
+        assert best_five_cards[0][3] == Card('hearts', 'king')
+        assert best_five_cards[0][4] == Card('clubs', '10')
+
+    def test_calculate_five_cards_used_2(self, cards36):
+        community_cards = cards36[:5]
+        hole_cards = cards36[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'one pair', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('clubs', 'king')
+        assert best_five_cards[0][1] == Card('hearts', 'queen')
+        assert best_five_cards[0][2] == Card('spades', 'king')
+        assert best_five_cards[0][3] == Card('diamonds', '9')
+        assert best_five_cards[0][4] == Card('diamonds', '6')
+
+    def test_calculate_five_cards_used_3(self, cards37):
+        community_cards = cards37[:5]
+        hole_cards = cards37[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'high hand', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('diamonds', 'jack')
+        assert best_five_cards[0][1] == Card('diamonds', '9')
+        assert best_five_cards[0][2] == Card('hearts', '5')
+        assert best_five_cards[0][3] == Card('hearts', 'queen')
+        assert best_five_cards[0][4] == Card('spades', 'ace')
+
+    def test_calculate_five_cards_used_4(self, cards38):
+        community_cards = cards38[:5]
+        hole_cards = cards38[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'one pair', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('hearts', 'jack')
+        assert best_five_cards[0][1] == Card('clubs', 'king')
+        assert best_five_cards[0][2] == Card('hearts', 'queen')
+        assert best_five_cards[0][3] == Card('diamonds', '8')
+        assert best_five_cards[0][4] == Card('spades', '8')
+
+    def test_calculate_five_cards_used_5(self, cards39):
+        community_cards = cards39[:5]
+        hole_cards = cards39[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'two pair', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('hearts', 'ace')
+        assert best_five_cards[0][1] == Card('hearts', '2')
+        assert best_five_cards[0][2] == Card('clubs', '2')
+        assert best_five_cards[0][3] == Card('diamonds', 'ace')
+        assert best_five_cards[0][4] == Card('spades', 'jack')
+
+    def test_calculate_five_cards_used_6(self, cards40):
+        community_cards = cards40[:5]
+        hole_cards = cards40[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'flush', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('diamonds', '4')
+        assert best_five_cards[0][1] == Card('diamonds', 'jack')
+        assert best_five_cards[0][2] == Card('diamonds', '5')
+        assert best_five_cards[0][3] == Card('diamonds', '9')
+        assert best_five_cards[0][4] == Card('diamonds', '7')
+
+    def test_calculate_five_cards_used_7(self, cards41):
+        community_cards = cards41[:5]
+        hole_cards = cards41[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'two pair', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('clubs', '3')
+        assert best_five_cards[0][1] == Card('diamonds', '3')
+        assert best_five_cards[0][2] == Card('clubs', '8')
+        assert best_five_cards[0][3] == Card('diamonds', '10')
+        assert best_five_cards[0][4] == Card('spades', '8')
+
+    def test_calculate_five_cards_used_8(self, cards42):
+        community_cards = cards42[:5]
+        hole_cards = cards42[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'straight', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('spades', '10')
+        assert best_five_cards[0][1] == Card('diamonds', 'jack')
+        assert best_five_cards[0][2] == Card('diamonds', '9')
+        assert best_five_cards[0][3] == Card('spades', '8')
+        assert best_five_cards[0][4] == Card('hearts', '7')
+
+    def test_calculate_five_cards_used_9(self, cards43):
+        community_cards = cards43[:5]
+        hole_cards = cards43[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'flush', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('diamonds', '5')
+        assert best_five_cards[0][1] == Card('diamonds', '10')
+        assert best_five_cards[0][2] == Card('diamonds', 'ace')
+        assert best_five_cards[0][3] == Card('diamonds', '9')
+        assert best_five_cards[0][4] == Card('diamonds', '2')
+
+    def test_calculate_five_cards_used_10(self, cards44):
+        community_cards = cards44[:5]
+        hole_cards = cards44[5:]
+        best_five_cards = TexasHoldem.calculate_five_cards_used(
+            'two pair', community_cards, hole_cards, 3, scores={})
+        assert len(best_five_cards[0]) == 5
+        assert best_five_cards[0][0] == Card('diamonds', 'ace')
+        assert best_five_cards[0][1] == Card('spades', 'ace')
+        assert best_five_cards[0][2] == Card('diamonds', 'king')
+        assert best_five_cards[0][3] == Card('spades', 'king')
+        assert best_five_cards[0][4] == Card('diamonds', 'queen')
