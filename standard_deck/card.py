@@ -40,3 +40,6 @@ class Card:
 
     def __repr__(self):
         return f'{self.rank} {self.suit}'
+
+    def __eq__(self, object):
+        return self.suit == object.suit and self.rank == object.rank
